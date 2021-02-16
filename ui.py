@@ -1,4 +1,6 @@
 from artist import Artist
+from artwork import Artwork
+
 
 def display_menu_get_choice(menu):
     """ Displays all of the menu options, checks that the user enters a valid choice and returns the choice.
@@ -32,12 +34,37 @@ def message(msg):
 #         print('\nNo books to display\n')  # \n's add blank line before and after message
 
 
-def get_artist_info():
+def get_artist_by_name():
     """ Create a new Book from title and author provided by user
+     :returns: a Book created from the title and author. """
+    name = input('Enter artist\'s name: ')
+    return name
+
+
+def get_artist_info():
+    """ Create a new Artist from title and author provided by user
      :returns: a Book created from the title and author. """
     name = input('Enter artist\'s name: ')
     email = input('Enter artist\'s email: ')
     return Artist(name, email)
+
+
+def get_artwork_info(artist_id):
+    """ Create a new Book from title and author provided by user
+     :returns: a Book created from the title and author. """
+    artwork = input('Enter name of artwork: ')
+    price = float(input('Enter price of artwork: '))
+    # name = input('Who is the artist of this artwork? ')
+    return Artwork(artwork, price, artist_id)
+
+
+def get_artwork_availability():
+    while True:
+        availability = input('Enter \'yes\' if artwork is for sale or \'no\' if it\'s not: ')
+        if availability.lower() in ['yes', 'no']:
+            return availability.lower() == 'yes'
+        else:
+            print('Type \'yes\' or \'no\'')
 
 
 # def get_book_id():
@@ -53,17 +80,6 @@ def get_artist_info():
 #
 #         except ValueError:
 #             print('Please enter a number.')
-
-
-def get_read_value():
-    """ Ask user to enter 'read' or 'not read'
-     :returns: True if user enters 'read' or False if user enters 'not read' """
-    while True:
-        response = input('Enter \'read\' if book is read or \'not read\' if book is not read: ')
-        if response.lower() in ['read', 'not read']:
-            return response.lower() == 'read'
-        else:
-            print('Type \'read\' or \'not read\'')
 
 
 def ask_question(question):
