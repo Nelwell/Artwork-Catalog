@@ -81,6 +81,9 @@ class ArtworkStore:
 
     def _get_artist_id(self, artist_name):
 
+        # search_term = artist_name
+        # search_term = '%'+search_term+'%'
+
         query_id = 'SELECT artist_id FROM artists WHERE name LIKE ?'
 
         try:
