@@ -12,7 +12,5 @@ class Artist:
         self.artworkstore = ArtworkStore()
 
     def insert_artist(self):
-        if self.artist_id:
-            add_artwork()
-        else:
-            self.artworkstore._add_artist(self)
+        if not self.artist_id:
+           self.artworkstore._add_artist(self)

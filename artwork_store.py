@@ -12,7 +12,7 @@ class ArtworkStore:
     # class __ArtworkStore:
 
     def __init__(self):
-        create_artist_table = 'CREATE TABLE IF NOT EXISTS artists (name TEXT COLLATE NOCASE, email TEXT COLLATE NOCASE, artist_id INTEGER PRIMARY KEY)'
+        create_artist_table = 'CREATE TABLE IF NOT EXISTS artists (name TEXT COLLATE NOCASE, email TEXT, artist_id INTEGER PRIMARY KEY, UNIQUE(email COLLATE NOCASE))'
 
         create_artwork_table = 'CREATE TABLE IF NOT EXISTS artworks (artwork TEXT, price REAL, artist_id INTEGER REFERENCES artists, for_sale BOOLEAN, UNIQUE(artwork COLLATE NOCASE))'
 
