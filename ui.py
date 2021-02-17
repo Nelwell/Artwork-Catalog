@@ -21,40 +21,46 @@ def message(msg):
     print(msg)
 
 
-# def show_books(books):
-#     """ Display all books in a list of Books, or a 'No books' message
-#      :param books: the book list """
-#
-#     if books:
-#         print()  # puts blank line before list of books
-#         for book in books:
-#             print(book)
-#         print()  # puts blank line after list of books
-#     else:
-#         print('\nNo books to display\n')  # \n's add blank line before and after message
+def show_artworks_by_artist(artworks):
+    """ Display all artworks in a list of Artworks, or a 'No artworks' message
+     :param artworks: the artwork list """
+
+    if artworks:
+        print()  # puts blank line before list of artworks
+        for art in artworks:
+            print(art)
+        print()  # puts blank line after list of artworks
+    else:
+        print('\nNo artworks to display\n')  # \n's add blank line before and after message
 
 
-def get_artist_by_name():
-    """ Create a new Book from title and author provided by user
-     :returns: a Book created from the title and author. """
+def get_artist_name():
+    """ Gets name of Artist from user
+     :returns: an Artist name based on given input. """
     name = input('Enter artist\'s name: ')
     return name
 
 
+def get_artwork_name():
+    """ Gets name of Artwork from user
+     :returns: an Artwork name based on given input. """
+    artwork_name = input('Enter name of artwork: ')
+    return artwork_name
+
+
 def get_artist_info():
-    """ Create a new Artist from title and author provided by user
-     :returns: a Book created from the title and author. """
+    """ Create a new Artist from name and email provided by user
+     :returns: an Artist created from the name and email. """
     name = input('Enter artist\'s name: ')
     email = input('Enter artist\'s email: ')
     return Artist(name, email)
 
 
 def get_artwork_info(artist_id):
-    """ Create a new Book from title and author provided by user
-     :returns: a Book created from the title and author. """
-    artwork = input('Enter name of artwork: ')
+    """ Create a new Artwork from artwork name and price provided by user
+     :returns: an Artwork created from the artwork name and price. """
+    artwork = input('Enter name of artwork: ').title()
     price = float(input('Enter price of artwork: '))
-    # name = input('Who is the artist of this artwork? ')
     return Artwork(artwork, price, artist_id)
 
 
@@ -65,21 +71,6 @@ def get_artwork_availability():
             return availability.lower() == 'yes'
         else:
             print('Type \'yes\' or \'no\'')
-
-
-# def get_book_id():
-#     """ Ask for ID, validate to ensure is positive integer
-#     :returns: the ID value """
-#     while True:
-#         try:
-#             id = int(input('Enter book ID: '))
-#             if id > 0:
-#                 return id
-#             else:
-#                 print('Please enter a positive number.')
-#
-#         except ValueError:
-#             print('Please enter a number.')
 
 
 def ask_question(question):
