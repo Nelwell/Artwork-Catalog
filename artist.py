@@ -1,5 +1,4 @@
 from artwork_store import ArtworkStore
-from main import add_artwork
 
 
 class Artist:
