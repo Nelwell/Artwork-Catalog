@@ -3,6 +3,7 @@ import unittest
 from unittest import TestCase
 
 import database_config
+
 test_db_path = 'database/test_artworks.db'
 database_config.db_path = test_db_path
 
@@ -15,6 +16,7 @@ artwork_store = ArtworkStore()
 
 
 class TestArtworksDB(TestCase):
+
 
     def setUp(self):
         # ensure tables exist and clear DB so it's empty before tests start
