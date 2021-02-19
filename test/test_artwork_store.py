@@ -13,6 +13,7 @@ from errors import ArtworkError
 from artwork import Artwork
 artwork_store = ArtworkStore()
 
+
 class TestArtworksDB(TestCase):
 
     def setUp(self):
