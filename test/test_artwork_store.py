@@ -3,31 +3,31 @@ import unittest
 from unittest import TestCase
 
 import database_config
+test_db_path = 'database/test_artworks.db'
+database_config.db_path = test_db_path
+
 from artist import Artist
 from artwork_store import ArtworkStore
 from errors import ArtworkError
 
 from artwork import Artwork
-
+artwork_store = ArtworkStore()
 
 class TestArtworksDB(TestCase):
 
-    test_db_path = 'database/test_artworks.db'
-
     def setUp(self):
         # ensure tables exist and clear DB so it's empty before tests start
-        database_config.db_path = self.test_db_path
 
-        # ArtworkStore().__init__()
+        ArtworkStore()
 
-        with sqlite3.connect(self.test_db_path) as conn:
+        with sqlite3.connect(test_db_path) as conn:
             conn.execute('DELETE FROM artists')
-            # conn.execute('DELETE FROM artworks')
+            conn.execute('DELETE FROM artworks')
         conn.close()
 
     def test_add_artist(self):
         example_artist = Artist('john', 'john@gmail.com')
-        example_added = Artist.insert_artist(example_artist)
+        example_added = artwork_store._add_artist(example_artist)
 
         self.assertTrue(example_added)
 

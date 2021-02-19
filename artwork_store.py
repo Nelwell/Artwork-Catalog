@@ -16,10 +16,9 @@ class ArtworkStore:
 
         create_artwork_table = 'CREATE TABLE IF NOT EXISTS artworks (artwork TEXT, price REAL, artist_id INTEGER REFERENCES artists, for_sale BOOLEAN, UNIQUE(artwork COLLATE NOCASE))'
 
-        conn = sqlite3.connect(db_path)
         enable_fk = 'PRAGMA foreign_keys = ON'
 
-        with conn:
+        with sqlite3.connect(db_path) as conn:
             conn.execute(enable_fk)  # ensures foreign key support is enabled on older versions of Python
             conn.execute(create_artist_table)
             conn.execute(create_artwork_table)
@@ -37,10 +36,11 @@ class ArtworkStore:
                 res = conn.execute(insert_artist, (artist.name, artist.email, artist.artist_id))
                 new_id = res.lastrowid  # Get the ID of the new row in the table
                 artist.artist_id = new_id  # Set this artist's ID
-        except sqlite3.IntegrityError as e:
-            raise ArtworkError(f'Error - this artist is already in the database. {artist}') from e
-        finally:
             conn.close()
+            return True
+        except sqlite3.IntegrityError:
+            print(f'Error - {artist} is already in the database.')
+            return False
 
     def _add_artwork(self, artwork):
         """ Adds artwork to store.
