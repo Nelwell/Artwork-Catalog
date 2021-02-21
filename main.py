@@ -88,7 +88,7 @@ def change_availability():
 
 
 def quit_program():
-    ui.message('Thanks for checking out the store!')
+    ui.message('\nThanks for checking out the store!')
 
 
 if __name__ == '__main__':

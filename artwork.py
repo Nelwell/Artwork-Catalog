@@ -48,7 +48,7 @@ class Artwork:
     def get_artwork_by_id(self, artist_id):
         """ Searches list for Artwork with associated ID of given artist name,
         :param artist_id the ID to search for
-        :returns the artwork, if found, or None if book not found.
+        :returns the artwork, if found, or None if artwork not found.
         """
 
         query_artwork_id = 'SELECT artist_id, * FROM artworks WHERE artist_id = ?'

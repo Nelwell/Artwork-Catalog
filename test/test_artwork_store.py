@@ -12,11 +12,11 @@ from artwork_store import ArtworkStore
 from errors import ArtworkError
 
 from artwork import Artwork
+
 artwork_store = ArtworkStore()
 
 
 class TestArtworksDB(TestCase):
-
 
     def setUp(self):
         # ensure tables exist and clear DB so it's empty before tests start
@@ -28,11 +28,49 @@ class TestArtworksDB(TestCase):
             conn.execute('DELETE FROM artworks')
         conn.close()
 
-    def test_add_artist(self):
-        example_artist = Artist('john', 'john@gmail.com')
-        example_added = artwork_store._add_artist(example_artist)
+    def test_confirm_artist_added(self):
+        example_artist = Artist('john', 'john@gmail.com', 1)
+        add_artist_example = artwork_store._add_artist(example_artist)
 
-        self.assertTrue(example_added)
+        self.assertTrue(add_artist_example)
+
+        expected_rows = [('john', 'john@gmail.com', 1)]
+        actual_rows = self.get_all_data()
+
+        # assertCountEqual will compare two iterables, e.g. a list of tuples returned from DB
+        self.assertCountEqual(expected_rows, actual_rows)
+
+        example_artist2 = Artist('Cassie', 'cassie@yahoo.com', 2)
+        add_artist_example2 = artwork_store._add_artist(example_artist2)
+
+        self.assertTrue(add_artist_example2)
+
+        expected_results = [('john', 'john@gmail.com', 1), ('Cassie', 'cassie@yahoo.com', 2)]
+        actual_results = self.get_all_data()
+
+        self.assertCountEqual(expected_results, actual_results)
+
+    def test_confirm_artwork_added(self):
+        example_artwork = Artwork('summer day', 50.99, 3, True)
+        add_artwork_example = artwork_store._add_artwork(example_artwork)
+
+        self.assertTrue(add_artwork_example)
+
+    def test_add_artist_with_same_email(self):
+        artist_one = Artist('Harry', 'harry@gmail.com')
+        artwork_store._add_artist(artist_one)
+
+        same_artist_email = Artist('Potter', 'harry@gmail.com')
+        add_same_email = artwork_store._add_artist(same_artist_email)  # shouldn't be allowed to add duplicate email
+
+        self.assertFalse(add_same_email)
+        self.assertRaises(sqlite3.IntegrityError)
+
+        # expected_rows = [('Jake', 'jake@gmail.com')]  # only first artist
+        # actual_rows = self.get_all_data()
+
+        # assertCountEqual will compare two iterables, e.g. a list of tuples returned from DB
+        # self.assertCountEqual(expected_rows, actual_rows)
 
         # expected_rows = [('Example', 25)]
         # actual_rows = self.get_all_data()
@@ -70,6 +108,12 @@ class TestArtworksDB(TestCase):
     #         rows = conn.execute('SELECT * FROM artist').fetchall()
     #     conn.close()
     #     return rows
+
+    def get_all_data(self):
+        with sqlite3.connect(test_db_path) as conn:
+            rows = conn.execute('SELECT * FROM artists').fetchall()
+        conn.close()
+        return rows
 
 
 if __name__ == '__main__':
