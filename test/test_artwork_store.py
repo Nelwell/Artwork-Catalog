@@ -56,58 +56,31 @@ class TestArtworksDB(TestCase):
 
         self.assertTrue(add_artwork_example)
 
-    def test_add_artist_with_same_email(self):
-        artist_one = Artist('Harry', 'harry@gmail.com')
-        artwork_store._add_artist(artist_one)
+    def test_add_artist_with_same_email_returns_false_and_raises_integrity_error(self):
+        artist_one_example = Artist('Harry', 'harry@gmail.com', 3)
+        artwork_store._add_artist(artist_one_example)
 
-        same_artist_email = Artist('Potter', 'harry@gmail.com')
+        same_artist_email = Artist('Potter', 'harry@gmail.com', 4)
         add_same_email = artwork_store._add_artist(same_artist_email)  # shouldn't be allowed to add duplicate email
 
         self.assertFalse(add_same_email)
-        self.assertRaises(sqlite3.IntegrityError)
+        self.assertRaises(sqlite3.IntegrityError)  # should also raise IntegrityError upon adding second entry with same email
 
-        # expected_rows = [('Jake', 'jake@gmail.com')]  # only first artist
-        # actual_rows = self.get_all_data()
+        expected_rows = [('Harry', 'harry@gmail.com', 3)]  # only first artist should be in db
+        actual_rows = self.get_all_data()
 
         # assertCountEqual will compare two iterables, e.g. a list of tuples returned from DB
-        # self.assertCountEqual(expected_rows, actual_rows)
+        self.assertCountEqual(expected_rows, actual_rows)
 
-        # expected_rows = [('Example', 25)]
-        # actual_rows = self.get_all_data()
-        #
-        # # assertCountEqual will compare two iterables, e.g. a list of tuples returned from DB
-        # self.assertCountEqual(expected_rows, actual_rows)
-        #
-        # example2 = Artist('Another Example', 30)
-        # added2 = test_db_path.add_artist(example2)
-        #
-        # self.assertTrue(added2)
-        #
-        # expected_rows = [('Example', 25), ('Another Example', 30)]
-        # actual_rows = self.get_all_data()
-        #
-        # self.assertCountEqual(expected_rows, actual_rows)
+    def test_add_artwork_with_same_name_returns_false_and_raises_integrity_error(self):
+        artwork_example = Artwork('Lunar Flesh', 65.99, 1, True)
+        artwork_store._add_artwork(artwork_example)
 
-    # def test_add_duplicate_name_artist(self):
-    #     example = Artist('Example', 25)
-    #     added = test_db_path.add_artist(example)
-    #
-    #     example2 = Artist('Example', 40)  # same name
-    #     added2 = test_db_path.add_artist(example2)
-    #
-    #     self.assertFalse(added2)
-    #
-    #     expected_rows = [('Example', 25)]  # only one artist
-    #     actual_rows = self.get_all_data()
-    #
-    #     # assertCountEqual will compare two iterables, e.g. a list of tuples returned from DB
-    #     self.assertCountEqual(expected_rows, actual_rows)
-    #
-    # def get_all_data(self):
-    #     with sqlite3.connect('test_art.sqlite') as conn:
-    #         rows = conn.execute('SELECT * FROM artist').fetchall()
-    #     conn.close()
-    #     return rows
+        artwork_same_name_example = Artwork('Lunar Flesh', 35.55, 1, False)
+        same_name_artwork_added = artwork_store._add_artwork(artwork_same_name_example)
+
+        self.assertFalse(same_name_artwork_added)
+        self.assertRaises(sqlite3.IntegrityError)  # should raise IntegrityError with artwork of same name regardless of other parameter values
 
     def get_all_data(self):
         with sqlite3.connect(test_db_path) as conn:

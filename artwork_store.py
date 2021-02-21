@@ -57,20 +57,19 @@ class ArtworkStore:
             return False
 
     def _update_availability(self, artwork):
-        """ Updates the information for an artwork. Assumes id has not changed and updates author, title and read values
-        Raises BookError if book does not have id
+        """ Updates the information for an artwork. Assumes id, artwork name, and price has not changed and updates for_sale status
+        Raises ArtworkError if Artwork ID not found in db
         :param artwork the Artwork to update
         """
 
         if not artwork.artist_id:
             raise ArtworkError('Book does not have ID, can\'t update')
 
-        query_update_availability = 'UPDATE artworks SET artwork = ?, price = ?, artist_id = ?, for_sale = ? WHERE artist_id = ?'
+        query_update_availability = 'UPDATE artworks SET for_sale = ? WHERE artist_id = ?'
 
         with sqlite3.connect(db_path) as conn:
-            updated = conn.execute(query_update_availability, (artwork.artwork, artwork.price, artwork.artist_id, artwork.for_sale))
+            updated = conn.execute(query_update_availability, (artwork.for_sale,))
             rows_modified = updated.rowcount
-
         conn.close()
 
         if rows_modified == 0:
