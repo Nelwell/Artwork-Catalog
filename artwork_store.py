@@ -65,7 +65,7 @@ class ArtworkStore:
         if not artwork.artist_id:
             raise ArtworkError('Book does not have ID, can\'t update')
 
-        query_update_availability = 'UPDATE artworks SET for_sale = ? WHERE artist_id = ?'
+        query_update_availability = 'UPDATE artworks SET for_sale = ? WHERE artwork = ?'
 
         with sqlite3.connect(db_path) as conn:
             updated = conn.execute(query_update_availability, (artwork.for_sale,))
@@ -73,7 +73,7 @@ class ArtworkStore:
         conn.close()
 
         if rows_modified == 0:
-            raise ArtworkError(f'Artwork with id {artwork.id} not found.')
+            raise ArtworkError(f'Artwork with name {artwork} not found.')
 
     def _get_artist_id(self, artist_name):
 

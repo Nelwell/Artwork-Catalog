@@ -10,9 +10,9 @@ database_config.db_path = test_db_path
 from artist import Artist
 from artwork_store import ArtworkStore
 from errors import ArtworkError
-
 from artwork import Artwork
 
+artwork = Artwork(artwork='', price=float, artist_id=int, for_sale=True)
 artwork_store = ArtworkStore()
 
 

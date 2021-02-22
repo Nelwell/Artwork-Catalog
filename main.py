@@ -65,21 +65,21 @@ def add_artwork():
 def change_availability():
     artist_name = ui.get_artist_name()
     artist_id = artwork_store._get_artist_id(artist_name)
-    # artworks = artist_artwork.get_all_artist_artwork(artist_id)
-    # artwork_name = ui.get_artwork_name()
-    artwork_object = artist_artwork.get_artwork_by_id(artist_id)
-    if artwork_object:  # If artwork ID found in db
+    artworks_list = artist_artwork.get_all_artist_artwork(artist_id)
+    if artworks_list:  # If artwork ID found in db
+        artwork_name = ui.get_artwork_name()
+        artwork_to_change = artist_artwork.get_artwork_by_name(artwork_name)
         availability_status = ui.get_artwork_availability()
         # if else statement to determine if for sale or not
         if not availability_status:
             sale_status = '"Sold"'
         else:
             sale_status = '"For Sale"'
-        artwork_object.for_sale = availability_status
-        artwork_object.update_artwork()
+        artwork_to_change.for_sale = availability_status
+        artwork_to_change.update_artwork()
         print('Artwork status has changed to', sale_status)
     else:  # If artwork ID not found in db
-        print('That artwork is not found.')
+        print('That artist has no artworks.')
         option = input('Return to main menu? Y for main menu or Enter to quit. ').upper()
         if option == 'Y':
             print()

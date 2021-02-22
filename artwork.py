@@ -44,7 +44,6 @@ class Artwork:
         """ And Python makes us implement __hash__ if __eq__ is overriden """
         return hash((self.artist_id, self.artwork, self.price, self.for_sale))
 
-
     def get_artwork_by_id(self, artist_id):
         """ Searches list for Artwork with associated ID of given artist name,
         :param artist_id the ID to search for
@@ -56,15 +55,14 @@ class Artwork:
         conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row  # This row_factory allows access to data by row name
         rows = conn.execute(query_artwork_id, (artist_id,))
-        artwork_data = rows.fetchone()  # Get first result
+        artworks_list = []  # empty list
 
-        if artwork_data:
-            artwork = Artwork(artwork_data['artwork'], artwork_data['price'], artwork_data['artist_id'], artwork_data['for_sale'])
-        else:
-            return None  # If artwork ID not found in db
+        for r in rows:
+            artwork = Artwork(r['artwork'], r['price'], r['artist_id'], r['for_sale'])
+            artworks_list.append(artwork)
         conn.close()
 
-        return artwork
+        return artworks_list
 
     def get_all_artist_artwork(self, artist_id):
         """ :returns entire artwork list associated with an artist """
@@ -99,3 +97,24 @@ class Artwork:
         conn.close()
 
         return artworks
+
+    def get_artwork_by_name(self, artwork_name):
+        """ Searches list for Artwork with associated ID of given artist name,
+        :param artwork_name the artwork to search for
+        :returns the artwork, if found, or None if artwork not found.
+        """
+
+        query_artwork_id = 'SELECT artwork, * FROM artworks WHERE artwork = ?'
+
+        conn = sqlite3.connect(db_path)
+        conn.row_factory = sqlite3.Row  # This row_factory allows access to data by row name
+        rows = conn.execute(query_artwork_id, (artwork_name,))
+        artwork_data = rows.fetchone()  # Get first result
+
+        if artwork_name:
+            artwork = Artwork(artwork_data['artwork'], artwork_data['price'], artwork_data['artist_id'], artwork_data['for_sale'])
+        else:
+            return None # If artwork name not found in db
+        conn.close()
+
+        return artwork
