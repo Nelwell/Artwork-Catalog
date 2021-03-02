@@ -4,7 +4,7 @@ import ui
 from artwork import Artwork
 
 artwork_store = ArtworkStore()
-artist_artwork = Artwork(artwork='', price=float, artist_id=int, for_sale=True)
+# artist_artwork = Artwork(artwork='', price=float, artist_id=int, for_sale=True)
 
 
 def main():
@@ -42,14 +42,14 @@ def add_artist():
 def show_all_artist_artwork():
     artist_name = ui.get_artist_name()
     artist_id = artwork_store._get_artist_id(artist_name)
-    artworks = artist_artwork.get_all_artist_artwork(artist_id)
+    artworks = Artwork.get_all_artist_artwork(artist_id)
     ui.show_artworks_by_artist(artworks)
 
 
 def show_artist_available_artwork():
     artist_name = ui.get_artist_name()
     artist_id = artwork_store._get_artist_id(artist_name)
-    artworks = artist_artwork.get_all_artist_available_artwork(artist_id)
+    artworks = Artwork.get_all_artist_available_artwork(artist_id)
     ui.show_artworks_by_artist(artworks)
 
 def add_artwork():

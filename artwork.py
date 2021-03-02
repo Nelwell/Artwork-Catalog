@@ -44,7 +44,8 @@ class Artwork:
         """ And Python makes us implement __hash__ if __eq__ is overriden """
         return hash((self.artist_id, self.artwork, self.price, self.for_sale))
 
-    def get_artwork_by_id(self, artist_id):
+    @staticmethod
+    def get_artwork_by_id(artist_id):
         """ Searches list for Artwork with associated ID of given artist name,
         :param artist_id the ID to search for
         :returns the artwork, if found, or None if artwork not found.
@@ -64,7 +65,8 @@ class Artwork:
 
         return artworks_list
 
-    def get_all_artist_artwork(self, artist_id):
+    @staticmethod
+    def get_all_artist_artwork(artist_id):
         """ :returns entire artwork list associated with an artist """
 
         query_get_all_artworks = 'SELECT rowid, * FROM artworks WHERE artist_id = ?'
@@ -81,7 +83,8 @@ class Artwork:
 
         return artworks
 
-    def get_all_artist_available_artwork(self, artist_id):
+    @staticmethod
+    def get_all_artist_available_artwork(artist_id):
         """ :returns entire available artwork list associated with an artist """
 
         query_get_all_artworks = 'SELECT rowid, * FROM artworks WHERE artist_id = ? AND for_sale = TRUE'
