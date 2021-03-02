@@ -4,7 +4,6 @@ import ui
 from artwork import Artwork
 
 artwork_store = ArtworkStore()
-# artist_artwork = Artwork(artwork='', price=float, artist_id=int, for_sale=True)
 
 
 def main():
@@ -65,10 +64,10 @@ def add_artwork():
 def change_availability():
     artist_name = ui.get_artist_name()
     artist_id = artwork_store._get_artist_id(artist_name)
-    artworks_list = artist_artwork.get_all_artist_artwork(artist_id)
+    artworks_list = Artwork.get_all_artist_artwork(artist_id)
     if artworks_list:  # If artwork ID found in db
         artwork_name = ui.get_artwork_name()
-        artwork_to_change = artist_artwork.get_artwork_by_name(artwork_name)
+        artwork_to_change = Artwork.get_artwork_by_name(artwork_name)
         availability_status = ui.get_artwork_availability()
         # if else statement to determine if for sale or not
         if not availability_status:
